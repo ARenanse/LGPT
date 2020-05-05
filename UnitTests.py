@@ -33,7 +33,7 @@ class Tests(unittest.TestCase):
 	def test_Basic1(self):
 
 		NumChains = 10
-		MaxSamples = 100000
+		MaxSamples = 10000
 		TempLadderMethod = 'GEO'
 		MaxTemp = 5000
 		SwapInt = 0.2
@@ -56,7 +56,7 @@ class Tests(unittest.TestCase):
 	def test_Basic2(self):
 
 		NumChains = 15
-		MaxSamples = 100000
+		MaxSamples = 10000
 		TempLadderMethod = 'LIN'
 		MaxTemp = 50000
 		SwapInt = 0.74
@@ -77,7 +77,7 @@ class Tests(unittest.TestCase):
 	def test_Basic3(self):
 
 		NumChains = 20
-		MaxSamples = 120000
+		MaxSamples = 10000
 		TempLadderMethod = 'HAR'
 		MaxTemp = 500000
 		SwapInt = 0.8
