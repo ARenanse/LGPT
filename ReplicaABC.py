@@ -105,8 +105,28 @@ DEPREC  ListMiscSamples : (mp.Queue) List in which samples for the Miscellaneous
         print("Abstract Function without any implementation called!!!")
         
         pass
+
+
     
+    @abstractmethod
+    def InitializeMiscParameters(self):
+        """
+        Call this function to initialize the Miscellaneous Parameters.
     
+        After this function is called, these three class variables should hold respective initial data:
+            1. self.CurrentPriorProb : Holds the Current value of Log Prior Likelihood at each iteration, thus it needs to be initialized.
+            2. self.CurrentLikelihoodProb : Holds the Current value of Log Likelihood at each iteration, thus it needs to be initialized.
+            3. self.MiscParamList : A list containing all the Miscellaneous parameters that will be needed for prior or likelihood calculation, hence, this needs to be intiialized as well.
+
+        NOTE HOW YOU INITIALIZE ALL THREE VARIABLES PARTLY GOVERNS HOW 'WELL' THE SAMPLING WILL BE.
+
+        THIS SHOULD BE CALLED IN THE EXTREME BOTTOM OF __init__ OF YOUR MODEL CLASS.
+        """
+        print("Abstract Function without any implementation called!!!")
+        
+        pass
+
+
         
     @abstractmethod
     def ProposeMiscParameters(self):
@@ -310,7 +330,7 @@ DEPREC  ListMiscSamples : (mp.Queue) List in which samples for the Miscellaneous
 
                 #Calculate Delta Proposal which is used in MH Prob calculation, note it's delta(differnece) cause we are computing Log Probability for MH Prob
 
-                    coefficient = self.ReplicaBeta / ( 2 * (self.RWStepSize))
+                    coefficient = self.ReplicaBeta / ( 2 * (self.RWStepSize) )
                     DeltaProposal_List = self.__NonLinCombLists( coefficient, ThetaP_delta, 2, coefficient, ThetaC_delta, 2 )   #The objective output!
 
                     DeltaProposal = self.__ReduceSumEachElement(DeltaProposal_List)
@@ -349,8 +369,8 @@ DEPREC  ListMiscSamples : (mp.Queue) List in which samples for the Miscellaneous
 
 
                 #Calculate DeltaPrior and DeltaLikelihood for MH Probability calculation.
-                DeltaPrior = PriorProposalProb - self.CurrentPriorProb
-                DeltaLikelihood = LHProposalProb - self.CurrentLikelihoodProb 
+                DeltaPrior = self.ReplicaBeta * (PriorProposalProb - self.CurrentPriorProb)
+                DeltaLikelihood = self.ReplicaBeta * (LHProposalProb - self.CurrentLikelihoodProb)
 
                 #Calculate Metropolis-Hastings Acceptance Probability.
 
@@ -359,13 +379,13 @@ DEPREC  ListMiscSamples : (mp.Queue) List in which samples for the Miscellaneous
                 # print("DeltaProposal: ", DeltaProposal)
 
 
-                alpha = min(1, torch.exp(DeltaPrior + DeltaLikelihood + DeltaProposal)) 
-
-                # if (i%int(self.NumSamples/5) == 0):
-                #     print("DeltaLikelihood at {} iteration for {}: {}".format(i, self.name ,DeltaLikelihood))
-                #     print("Alpha at {} for {}: {}".format(i, self.name ,alpha))
+                alpha = min(1, torch.exp(DeltaPrior + DeltaLikelihood + DeltaProposal))    
 
 
+                # if (i%int(self.NumSamples/2) == 0):
+                #     print('\n')
+                #     print("-> {} :: DeltaLikelihood at {} : {}".format(self.name, i ,DeltaLikelihood))
+                #     print("-> {} :: Alpha at {} : {}".format(self.name , i , alpha))
 
                 #print("Alpha: ", alpha)
             
