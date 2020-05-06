@@ -350,12 +350,14 @@ class ParallelTempering():
 
 
 
-    def RunChains(self, *args):
+    def RunChains(self, *args, SamplesFileName = 'Samples.npy'):
 
         """
         Runs all the chains to collect MaxSamples samples from each replica.
 
-        Each Replica collects self.NumReplicaSamples (SwapInterval) amout of samples in each run, therefore the Swap checks will be done int(MaxSamples/NumReplicaSamples) times
+        Each Replica collects self.NumReplicaSamples (SwapInterval) amout of samples in each run, therefore the Swap checks will be done int(MaxSamples/NumReplicaSamples) times.
+
+        SamplesFileName : The name of .npy file where the samples will be saved.
         """
 
         t1 = time.time()
@@ -408,8 +410,8 @@ class ParallelTempering():
         print('\n\n')
 
 
-        print("######################  All Runs Completed in {} seconds, saving samples now as 'Samples.npy' ###################### ".format(t4-t1))
-        np.save('Samples.npy',np.array(self.AllSamples), allow_pickle = True)
+        print("######################  All Runs Completed in {} seconds, saving samples now as '{}' ###################### ".format(t4-t1, SamplesFileName))
+        np.save(SamplesFileName, np.array(self.AllSamples), allow_pickle = True)
 
         print("ALL DONE!")
 
