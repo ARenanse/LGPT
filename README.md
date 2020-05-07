@@ -22,7 +22,7 @@ The idea behind keeping multiple samplers at different temperatures, instead of 
 To tackle that, Parallel Tempering uses multiple replicas at different temperatures, where high temperature effectively *flattens the modes* so as to reduce the chances of getting *stuck* in a local minima. The replicas at lower temperature doesn't have this effect and thus can effectively sample from the original distribution.
 The main idea in Parallel Tempering is that of swapping the configuration of these replicas from high temperature to lower temperature depending on the likelihood that the system sampling at the higher temperature happens to be in a region of phase space that is important to the replicas at lower temperature.
 
-# 2. How to use this Package
+# 3. How to use this Package
 
 For a given well defined Bayesian problem in Neural setting, one will have a function approximator, in this case, a Neural Network defined as a PyTorch model,
 the Prior Distribution over the parameters (weights & biases), and the Likelihood of the data given the parameters.
@@ -132,7 +132,7 @@ Again, this function can be implemented as flexibly as possible and is supplemen
 Finally, the function should return two arguments, first one is the Likelihood probability itself (strictly of type torch.tensor), the other is a list of inormation regarding the computation as discussed above.
 
 
-## 3. How to use this class
+## 4. How to use this class
 
 In your class, now you must have *NumSamples, GlobalFraction, Temperature, UseLG, LGProb, TrainData, TestData, lr, RWStepSize, ChildConn* as arguments on the *__init__* apart from other stuff that is specefic fro your need. 
 
@@ -166,7 +166,7 @@ After this, you can just call *RunChains()* and it will run the chains with impo
 The samples collected from all the chains will be available as a Numpy file with name *Samples.npy*.
 
 
-## 4. Example Usage
+## 5. Example Usage
 
 We have Implemented a basic Model as explained in arXiv:1811.04343v1 in the file *PTReplica.py*.
 That Model is trained by the script in *PT_Test.py*, take a look there on how to Run Replicas.
