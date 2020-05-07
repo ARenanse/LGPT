@@ -1,11 +1,19 @@
-[![Build Status](https://travis-ci.org/WhenDustSettles/LGPT.svg?branch=master)](https://travis-ci.org/WhenDustSettles/LGPT)
+[![Build Status](https://travis-ci.org/WhenDustSettles/LGPT.svg?branch=master)](https://travis-ci.org/WhenDustSettles/LGPT)         ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/WhenDustSettles/LGPT?color=j&include_prereleases)
+
+
 
 # Langevin Gradient Parallel Tempering for Bayesian Neural Learning
 This repository is a very tangible and general purpose implementation of the Langevin Gradient Parallel Tempering Algorithm as explained in Chandra et al in < arXiv:1811.04343v1 > using mutliprocessing.
 
 Using this, one can sample from the Posterior Distribution in weights of any\* PyTorch based model by inheriting the *PTReplicaMetaBase* class from *ReplicaABC.py* and defining the other model parameters, like the Prior Distribution over weights, the Likelihood and other problem dependent parameters (look over to the following sections on how to declare them correctly).
 
-# 1. A Brief Explaination of the Parallel Tempering Algorithm
+# 1. Requirements
+
+Built on:
+1. Numpy v1.17.2
+2. Torch v1.15.0
+
+# 2. A Brief Explaination of the Parallel Tempering Algorithm
 Parallel Tempering has been long used in Monte Carlo simulations, dating back from Hansmann's use of it in 1997 in simulations of a biomolecule to Sugita's formulation of a molecular dynamics version of parallel tempering in 1999.
 
 In Parallel Tempering, one simulates some (say, *M*) number of replicas of the system in interest where each replica is in a canonical ensemble, albeit in different temperatures.
@@ -124,7 +132,7 @@ Again, this function can be implemented as flexibly as possible and is supplemen
 Finally, the function should return two arguments, first one is the Likelihood probability itself (strictly of type torch.tensor), the other is a list of inormation regarding the computation as discussed above.
 
 
-## How to use this class
+## 3. How to use this class
 
 In your class, now you must have *NumSamples, GlobalFraction, Temperature, UseLG, LGProb, TrainData, TestData, lr, RWStepSize, ChildConn* as arguments on the *__init__* apart from other stuff that is specefic fro your need. 
 
@@ -158,13 +166,14 @@ After this, you can just call *RunChains()* and it will run the chains with impo
 The samples collected from all the chains will be available as a Numpy file with name *Samples.npy*.
 
 
-## Example Usage
+## 4. Example Usage
 
 We have Implemented a basic Model as explained in arXiv:1811.04343v1 in the file *PTReplica.py*.
 That Model is trained by the script in *PT_Test.py*, take a look there on how to Run Replicas.
 
 The results of training this basic model on a basic ![\frac{sin(x)} {x}](https://render.githubusercontent.com/render/math?math=%5Cfrac%7Bsin(x)%7D%20%7Bx%7D) Regression task is shown in the Notebook named *Comparison.ipynb*.
 It also carries a comparison with a basic frequentist model trained by backpropagation.
+
 
 
 **Finally, I hope the Internal Documentation of the code is clear enough for those who are interested in the implementation itself.**
