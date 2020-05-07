@@ -36,10 +36,10 @@ class BasicModel(PTReplicaMetaBase):
 		"""
 
 		#Initializing Miscellaneous Parameters, at the extreme bottom of __init__.
-		self.InitializeMiscParameters()
+		self.InitializeMetaParameters()
 		
 	
-	def GiveMeTheLoss(self):
+	def ReturnLoss(self):
 		
 		"""
 		This function is supposed to do the following things:-
@@ -120,7 +120,7 @@ class BasicModel(PTReplicaMetaBase):
 	
 
 
-	def InitializeMiscParameters(self):
+	def InitializeMetaParameters(self):
 
 		"""
 		Initializes the self.CurrentLikelihoodProb, self.CurrentPriorProb and self.MiscParamList
