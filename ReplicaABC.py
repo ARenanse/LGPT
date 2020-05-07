@@ -358,7 +358,7 @@ DEPREC  ListMiscSamples : (mp.Queue) List in which samples for the Miscellaneous
 
                 #Calculate Likelihood Probability with the Theta_proposal and New Proposals for Miscellaneous Parameters.(Note this is a log probability)
                 LHProposalProb, infoLH = self.Likelihood(MiscProposalList, Theta_proposal)
-                if (len(infoLH == 0) or (infoLH[0] == None)):
+                if ((len(infoLH) == 0) or (infoLH[0] == None)):
                     maxLoss = None
 
                 else:
