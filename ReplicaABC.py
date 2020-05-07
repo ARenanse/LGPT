@@ -33,7 +33,7 @@ DEPREC  ListMiscSamples : (mp.Queue) List in which samples for the Miscellaneous
         lr : (float), Learning Rate.
         RWStepSize : (float), Step Size for Random Walk.
         ChildConn : (mp.connection) It's used to transfer the Likelihood and Prior prob back to main process.
-        LossFunc : torch.nn 's Method, the Loss function to use while evaluating Langevin Gradients, used in self.GiveMeTheLoss
+        LossFunc : torch.nn 's Method, the Loss function to use while evaluating Langevin Gradients, used in self.ReturnLoss
        
         
         """
@@ -96,7 +96,7 @@ DEPREC  ListMiscSamples : (mp.Queue) List in which samples for the Miscellaneous
                 
         
     @abstractmethod
-    def GiveMeTheLoss(self):
+    def ReturnLoss(self):
         """
         Returns the loss [torch.tensor] using the self.LossFunc AFTER computing y_pred from Model as desired.
         
@@ -109,9 +109,9 @@ DEPREC  ListMiscSamples : (mp.Queue) List in which samples for the Miscellaneous
 
     
     @abstractmethod
-    def InitializeMiscParameters(self):
+    def InitializeMetaParameters(self):
         """
-        Call this function to initialize the Miscellaneous Parameters.
+        Call this function to initialize the Meta Parameters.
     
         After this function is called, these three class variables should hold respective initial data:
             1. self.CurrentPriorProb : Holds the Current value of Log Prior Likelihood at each iteration, thus it needs to be initialized.
@@ -281,7 +281,7 @@ DEPREC  ListMiscSamples : (mp.Queue) List in which samples for the Miscellaneous
                 #Step 1: Make a copy of current model parameters as a List 
                 #----------->Already done.
                 #Step 2: Do a backward pass to obtain gradients
-                loss = self.GiveMeTheLoss()
+                loss = self.ReturnLoss()
                 self.Model.zero_grad()
                 loss.backward()
                 
@@ -308,7 +308,7 @@ DEPREC  ListMiscSamples : (mp.Queue) List in which samples for the Miscellaneous
                     self.Model.load_state_dict(ProposalStateDict)
 
                 #Step 2: Do a backward pass to obtain gradients of model parameters wrt to Theta_proposal
-                loss2 = self.GiveMeTheLoss()
+                loss2 = self.ReturnLoss()
                 self.Model.zero_grad()
                 loss2.backward()
                 
@@ -358,10 +358,16 @@ DEPREC  ListMiscSamples : (mp.Queue) List in which samples for the Miscellaneous
 
                 #Calculate Likelihood Probability with the Theta_proposal and New Proposals for Miscellaneous Parameters.(Note this is a log probability)
                 LHProposalProb, infoLH = self.Likelihood(MiscProposalList, Theta_proposal)
+                if (len(infoLH == 0) or (infoLH[0] == None)):
+                    maxLoss = None
+
+                else:
+                    if maxLoss < infoLH[0]:
+                        maxLoss = infoLH[0]
+
                 #print("Likelihood Loss on the Proposed Parameters: ", infoLH[0])
 
-                if maxLoss < infoLH[0]:
-                    maxLoss = infoLH[0]
+                
                 #Calculate Prior Probability with the New Proposals for Misc Parameters and/or/maybe the Theta_Proposal too( and if that happens, it implies
                 # that calculation of the prior is also dependent on the model which is a highly unlikely case.). 
                 #  Note this is a log probability.
@@ -438,7 +444,8 @@ DEPREC  ListMiscSamples : (mp.Queue) List in which samples for the Miscellaneous
         print("-----> Statistics of {}".format(self.name))
         print("{}-->> Temperature: ".format(self.name), self.Temperature)
         print("{}-->> Number of Accepts In this Run / {}: {}".format(self.name, self.NumSamples , self.AcceptsInThisRun))
-        print("{}-->> Maximum Likelihood Loss on Proposed Parameters: ".format(self.name), maxLoss)
+        if (maxLoss != None):
+            print("{}-->> Maximum Likelihood Loss on Proposed Parameters: ".format(self.name), maxLoss)
         print("{}-->> Current Log Likelihood Prob after the run: ".format(self.name), self.CurrentLikelihoodProb)
         print("{}-->> Current Likelihood Loss after the run: ".format(self.name), infoLH[0])
         print("Returning from the loop!! of {}".format(self.name))
