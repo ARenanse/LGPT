@@ -3,7 +3,7 @@
 
 
 # Langevin Gradient Parallel Tempering for Bayesian Neural Learning
-This repository is a very tangible and general purpose implementation of the Langevin Gradient Parallel Tempering Algorithm as explained in Chandra et al in < arXiv:1811.04343v1 > using mutliprocessing.
+This repository is a tangible and general purpose implementation of the Langevin Gradient Parallel Tempering Algorithm as explained in Chandra et al in < arXiv:1811.04343v1 > using mutliprocessing.
 
 Using this, one can sample from the Posterior Distribution in weights of any\* PyTorch based model by inheriting the *PTReplicaMetaBase* class from *ReplicaABC.py* and defining the other model parameters, like the Prior Distribution over weights, the Likelihood and other problem dependent parameters (look over to the following sections on how to declare them correctly).
 
