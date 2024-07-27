@@ -43,13 +43,12 @@ After inheriting it, you can define your Model, Training/Testing set and anythin
 This is a list of those parameters that are used in Prior or Likelihood distributions, other than Model results itself.
     
 For example, someone might define the Prior distribution over weights as the following : 
-    
-![p(\theta) \propto \frac{1}{{(2 \pi \tau^2)}^{n/2}} \times exp \left( -\frac{1}{2\sigma^2} \sum_{\forall w \in \mathbb{W} } w^2 \right) \times \tau^{2(1 + \nu_1)} exp(-\frac{-\nu_2}{\tau^2})](https://render.githubusercontent.com/render/math?math=p(%5Ctheta)%20%5Cpropto%20%5Cfrac%7B1%7D%7B%7B(2%20%5Cpi%20%5Ctau%5E2)%7D%5E%7Bn%2F2%7D%7D%20%5Ctimes%20exp%20%5Cleft(%20-%5Cfrac%7B1%7D%7B2%5Csigma%5E2%7D%20%5Csum_%7B%5Cforall%20w%20%5Cin%20%5Cmathbb%7BW%7D%20%7D%20w%5E2%20%5Cright)%20%5Ctimes%20%5Ctau%5E%7B2(1%20%2B%20%5Cnu_1)%7D%20exp(-%5Cfrac%7B-%5Cnu_2%7D%7B%5Ctau%5E2%7D))
+    $$p(\theta) \propto \frac{1}{{(2 \pi \tau^2)}^{n/2}} \times exp \left( -\frac{1}{2\sigma^2} \sum_{\forall w \in \mathbb{W} } w^2 \right) \times \tau^{2(1 + \nu_1)} exp(-\frac{-\nu_2}{\tau^2}).$$
 
 
 The above equation describes the Prior distribution over weights for a particular problem (see arXiv:1811.04343v1, Chandra et al).
     
-In this equation, the Miscellaneous Parameters are: ![\tau, \sigma, \nu_1, \nu_2](https://render.githubusercontent.com/render/math?math=%5Ctau%2C%20%5Csigma%2C%20%5Cnu_1%2C%20%5Cnu_2).
+In this equation, the Miscellaneous Parameters are: $\tau, \sigma, \nu_1, \nu_2$.
     
 Therefore, the self.MiscParamList will be a length 4 list of these parameters, or it can increase if Likelihood introduces more parameters.
     
@@ -171,7 +170,7 @@ The samples collected from all the chains will be available as a Numpy file with
 We have Implemented a basic Model as explained in arXiv:1811.04343v1 in the file *PTReplica.py*.
 That Model is trained by the script in *PT_Test.py*, take a look there on how to Run Replicas.
 
-The results of training this basic model on a basic ![\frac{sin(x)} {x}](https://render.githubusercontent.com/render/math?math=%5Cfrac%7Bsin(x)%7D%20%7Bx%7D) Regression task is shown in the Notebook named *Comparison.ipynb*.
+The results of training this basic model on a basic $\frac{sin(x)} {x}$ regression task is shown in the notebook named *Comparison.ipynb*.
 It also carries a comparison with a basic frequentist model trained by backpropagation.
 
 
